@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace ru.lecha.curs
 {
@@ -13,13 +10,20 @@ namespace ru.lecha.curs
         static void Main(string[] args)
         {
             while (Console.ReadKey().Key != ConsoleKey.Escape) {
-                Console.WriteLine(" 1) Введите на первой строке путь к файлу C:/Users/Public/TestFolder/WriteText.txt \n 2) На второй, 2 первых символа для поиска \n 3) Выход - Esc");
+                Console.Clear();
+                Console.WriteLine(" Введите путь к файлу, как C:/Users/Public/TestFolder/WriteText.txt");
+                var p = Console.ReadLine()??"";
+                Console.WriteLine("---------------------------------------------------------------\n Поиск - Y; Назад - Другая клавиша;");
+                while (File.Exists(p)&&Console.ReadKey().Key == ConsoleKey.Y) {
                 var dictionary = new Regex(@"\W|\d")
-                    .Replace(System.IO.File.ReadAllText(Console.ReadLine()), " ")
+                    .Replace(File.ReadAllText(p), " ")
                     .Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries)
                     .ToLookup(s => (s.Length > 1) ? s.Substring(0, 2) : "--");
-                Console.WriteLine(dictionary[Console.ReadLine()].Count());
-               }
+                Console.WriteLine("\n---------------------------------------------------------------\n Введите 2 первых символа для поиска");
+                Console.WriteLine("---------------------------------------------------------------\n Найдено: " + dictionary[Console.ReadLine()].Count()+ "; Продолжить поиск - Y; Назад - Другая клавиша;");
+                }
+                Console.WriteLine("---------------------------------------------------------------\n Выход - Esc; Читать новый файл - Другая клавиша; ");
+            }
         }
     }
 }
