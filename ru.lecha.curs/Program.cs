@@ -1,12 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
 namespace ru.lecha.curs
 {
     class Program
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static void Main(string[] args)
         {
             while (Console.ReadKey().Key != ConsoleKey.Escape) {
@@ -20,7 +22,10 @@ namespace ru.lecha.curs
                 .ToLookup(s => (s.Length > 1) ? s.Substring(0, 2) : "--");
                 do {
                     Console.WriteLine("\n---------------------------------------------------------------\n Введите 2 первых символа для поиска");
-                    Console.WriteLine("---------------------------------------------------------------\n Найдено: " + dictionary[Console.ReadLine()].Count()+ "; Продолжить поиск - Y; Назад - Другая клавиша;"); 
+                    var findStr = Console.ReadLine();
+                    Console.WriteLine("---------------------------------------------------------------\n Найдено: " + dictionary[findStr].Count()+" ");
+                    dictionary[findStr].ToList().ForEach(s => Console.Write(s + " "));
+                    Console.WriteLine("; Продолжить поиск - Y; Назад - Другая клавиша;"); 
                 } while (Console.ReadKey().Key == ConsoleKey.Y);
                 Console.WriteLine("---------------------------------------------------------------\n Выход - Esc; Читать новый файл - Другая клавиша; ");
             }
